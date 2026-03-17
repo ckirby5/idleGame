@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client-js" 
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                Int      @id @default(autoincrement())
+  email             String   @unique
+  username          String   @unique
+  passwordHash      String
+  createdAt         DateTime @default(now())
+  skills            Skill[]
+  inventorySettings InventorySettings?
+  inventoryItems    InventoryItem[]
+  tasks             Task[]
+  upgrades          Upgrade[]
+}
+
+model ResourceDefinition {
+  id                Int      @id @default(autoincrement())
+  name              String   @unique
+  resourceType      String   
+  skillRequired     String
+  levelRequired     Int
+  baseGatherTime    Int
+  baseXpReward      Int
+  createdAt         DateTime @default(now())
+  description       String?
+  sellValue         Int?
+  stackLimit        Int?
+  icon              String?
+  inventoryItems    InventoryItem[]
+  tasks             Task[] 
+}
+
+model Skill {
+  id                Int      @id @default(autoincrement())
+  user              User     @relation(fields: [userId], references: [id])
+  userId            Int      
+  skillType         String
+  level             Int      @default(1)
+  currentXp         Int      @default(0)
+  createdAt         DateTime @default(now())
+  @@unique([userId, skillType])
+}
+
+model InventorySettings {
+  id                Int      @id @default(autoincrement())
+  user              User     @relation(fields: [userId], references: [id])
+  userId            Int      @unique
+  maxSlots          Int      @default(20)
+  createdAt         DateTime @default(now())
+}
+
+model InventoryItem {
+  id                Int                @id @default(autoincrement())
+  user              User               @relation(fields: [userId], references: [id])
+  userId            Int
+  resource          ResourceDefinition @relation(fields: [resourceId], references: [id])      
+  resourceId        Int      
+  quantity          Int                @default(1)
+  slotPosition      Int?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  @@unique([userId, resourceId])
+}
+
+model Task {
+  id                Int                @id @default(autoincrement())
+  user              User               @relation(fields: [userId], references: [id])
+  userId            Int
+  resource          ResourceDefinition @relation(fields: [resourceId], references: [id])
+  resourceId        Int
+  taskType          String
+  status            String             @default("active")
+  startTime         DateTime           @default(now())
+  endTime           DateTime?
+  quantityGathered  Int?
+  xpGained          Int?
+  createdAt         DateTime           @default(now())
+}
+
+model Upgrade {
+  id                Int      @id @default(autoincrement())
+  user              User     @relation(fields: [userId], references: [id])
+  userId            Int      
+  upgradeType       String
+  currentLevel      Int      @default(0)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  @@unique([userId, upgradeType])
+}

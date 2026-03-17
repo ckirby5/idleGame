@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@prisma/client": "^7.4.2",
+    "pg": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.16.0",
+    "prisma": "^7.4.2"
+  }
+}
