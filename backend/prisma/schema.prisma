@@ -84,13 +84,13 @@ model Task {
   taskType          String
   status            String             @default("active")
   startTime         DateTime           @default(now())
-  endTime           DateTime?
-  quantityGathered  Int?
-  xpGained          Int?
   createdAt         DateTime           @default(now())
   totalSwings       Int                @default(0)
   damageDealt       Int                @default(0)
   remainingHp       Int?
+  cyclesCompleted   Int                @default(0)
+  lastClaimTime     DateTime?
+  rewardClaim       RewardClaim[]
 }
 
 model Upgrade {
@@ -115,4 +115,23 @@ model Equipment {
   createdAt         DateTime @default(now())
   
   @@unique([userId, equipmentType, equipmentTier])
+}
+
+model LevelRequirement {
+  id                Int       @id @default(autoincrement())
+  skillType         String
+  level             Int
+  xpRequired        Int
+  
+  @@unique([skillType, level])
+}
+
+model RewardClaim {
+  id                Int      @id @default(autoincrement())
+  task              Task     @relation(fields: [taskId], references: [id])
+  taskId            Int
+  claimedAt         DateTime @default(now())
+  cyclesClaimed     Int
+  xpAwarded         Int
+  oreAwarded        Int
 }

@@ -65,6 +65,7 @@ async function main() {
             stackLimit: 100
         }
     });
+    seedLevelRequirements();
 
     console.log('Seeded resources:', { copperOre, ironOre, coalOre });
 }
@@ -75,3 +76,22 @@ main().catch((e) => {
 }).finally(async () => {
     await prisma.$disconnect();
 });
+
+async function seedLevelRequirements() {
+    const levelRequirements = [
+        { skillType: "mining", level: 0, xpRequired: 0 },
+        { skillType: "mining", level: 1, xpRequired: 100 },
+        { skillType: "mining", level: 2, xpRequired: 300 },
+        { skillType: "mining", level: 3, xpRequired: 600 },
+        { skillType: "mining", level: 4, xpRequired: 1000 },
+        { skillType: "mining", level: 5, xpRequired: 1500 },
+    ];
+
+    for (const req of levelRequirements) {
+        await prisma.levelRequirement.upsert({
+            where: { skillType_level: { skillType: "mining", level: req.level } },
+            update: {},
+            create: req,
+        });
+    }
+}

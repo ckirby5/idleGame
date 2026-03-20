@@ -1,6 +1,6 @@
 import { Router, RequestHandler } from "express";
 import { authenticate, AuthenticatedRequest } from "../middleware/auth";
-import { getAvailableResources, startMining, getMiningStatus, claimMiningResources } from "../controllers/miningController";
+import { getAvailableResources, startMining, getMiningStatus, stopMining } from "../controllers/miningController";
 
 const router = Router();
 
@@ -13,7 +13,7 @@ router.post("/start", startMining as unknown as RequestHandler);
 
 router.get("/status", getMiningStatus as unknown as RequestHandler);
 
-router.post("/claim", claimMiningResources as unknown as RequestHandler);
+router.post("/stop", stopMining as unknown as RequestHandler);
 
 
 export default router;
