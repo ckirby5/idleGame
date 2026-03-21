@@ -4,6 +4,7 @@ import { PrismaClient } from '@prisma/client';
 import authRouter from "./routes/auth";
 import { authenticate, AuthenticatedRequest } from "./middleware/auth";
 import miningRouter from "./routes/mining";
+import cors from "cors";
 
 
 const app = express();
@@ -11,6 +12,12 @@ const port: number = 3000;
 const prisma = new PrismaClient();
 
 app.use(express.json());
+
+app.use(cors({
+  origin: "http://localhost:4200",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+}));
 
 app.use("/api/auth", authRouter);
 app.use("/api/mining", miningRouter);

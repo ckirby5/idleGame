@@ -1,0 +1,27 @@
+<h1>Mining Dashboard</h1>
+<p>Welcome to the mining dashboard! Here you can manage your mining operations and track your progress.</p>
+<div class="mining-dashboard">
+  <div class="mining-stats">
+    <h2>Mining Stats</h2>
+    <p>Current Mining Level: {{ miningLevel }}</p>
+    <p>Current XP: {{ currentXp }}</p>  
+  </div>
+  <div class="mining-progress">
+    <p>Available Ores:</p>
+<ul>
+  <li *ngFor="let ore of ores">
+    {{ ore.name }} (Level {{ ore.levelRequired }} required) - {{ ore.hp }} HP
+    <button (click)="startMining(ore.id)">Mine</button>
+  </li>
+</ul>
+    <p>Cycles Completed: {{ cyclesCompleted }}</p>
+    <div *ngIf="isMining && currentCycle">
+        <p>Current Cycle Progress:</p>
+        <p>Swings: {{ currentCycle.swings }}</p>
+        <p>Damage Dealt: {{ currentCycle.damageDealt }}</p>
+        <p>Remaining HP: {{ currentCycle.remainingHp }}</p>
+        <p>Percent Complete: {{ currentCycle.percentComplete }}%</p>
+    </div>
+    <button *ngIf="isMining" (click)="stopMining()">Stop Mining</button>
+  </div>
+</div>
