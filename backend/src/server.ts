@@ -4,6 +4,7 @@ import { PrismaClient } from '@prisma/client';
 import authRouter from "./routes/auth";
 import { authenticate, AuthenticatedRequest } from "./middleware/auth";
 import miningRouter from "./routes/mining";
+import characterRouter from "./routes/character";
 import cors from "cors";
 
 
@@ -14,13 +15,14 @@ const prisma = new PrismaClient();
 app.use(express.json());
 
 app.use(cors({
-  origin: "http://localhost:4200",
+  origin: "http://localhost:51223",
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
 }));
 
 app.use("/api/auth", authRouter);
 app.use("/api/mining", miningRouter);
+app.use("/api/character", characterRouter);
 
 app.get("/", async (req: Request, res: Response): Promise<void> => {
   const users = await prisma.user.findMany();

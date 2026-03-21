@@ -1,0 +1,39 @@
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.topNav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #988656;
+    color: #343f55;
+    padding: 10px 20px;
+}
+
+.topNav li {
+    margin: 0 15px;
+}
+
+.topNav a {
+    color: white;
+    text-decoration: none;
+}
+
+.topNav a:hover {
+    text-decoration: underline;
+}
+
+.logout {
+  cursor: pointer;
+  color: #343f55;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.logout:hover {
+  background-color: rgba(69, 152, 143, 0.3);
+}

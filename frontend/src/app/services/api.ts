@@ -36,4 +36,8 @@ export class ApiService {
     return this.http.post(`${this.apiUrl}/mining/stop`, {}, { headers: this.getAuthHeaders() });
   }
 
+  getCharacterStats() : Observable<any> {
+    return this.http.get(`${this.apiUrl}/character/stats`, { headers: this.getAuthHeaders() });
+  }
+
 }
