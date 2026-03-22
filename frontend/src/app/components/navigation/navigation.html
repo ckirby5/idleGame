@@ -3,11 +3,43 @@
     <span>{{ username }} • Total Lvl: {{ totalLevel }}</span>
     <span class="logout" (click)="logout()">Logout</span>
 </div>
-<div class="sideNav">
-  <span>Dashboard</span>
-  <span>Mining</span>
-  <span>Inventory</span>
-  <span>Skills</span>
-  <span>Shop</span>
-  <span>Upgrades</span>
-</div>
+<nav id="mySidebar" class="sideNav">
+  <ul>
+    <li>
+      <a routerLink="/dashboard" routerLinkActive="active">
+        <span class="material-icons">home</span>
+        <span class="nav-label">Dashboard</span>
+      </a>
+    </li>
+    <li>
+      <a routerLink="/mining" routerLinkActive="active">
+        <span class="material-icons">landscape</span>
+        <span class="nav-label">Mining</span>
+      </a>
+    </li>
+    <li>
+      <a routerLink="/inventory" routerLinkActive="active">
+        <span class="material-icons">inventory_2</span>
+        <span class="nav-label">Inventory</span>
+      </a>
+    </li>
+    <li>
+      <a routerLink="/skills" routerLinkActive="active">
+        <span class="material-icons">emoji_events</span>
+        <span class="nav-label">Skills</span>
+      </a>
+    </li>
+    <li>
+      <a routerLink="/shop" routerLinkActive="active">
+        <span class="material-icons">shopping_cart</span>
+        <span class="nav-label">Shop</span>
+      </a>
+    </li>
+    <li>
+      <a routerLink="/upgrades" routerLinkActive="active">
+        <span class="material-icons">upgrade</span>
+        <span class="nav-label">Upgrades</span>
+      </a>
+    </li>
+  </ul>
+</nav>

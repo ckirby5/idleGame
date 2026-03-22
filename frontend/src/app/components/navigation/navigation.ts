@@ -1,13 +1,14 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { AuthService } from '../../services/auth';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { ApiService } from '../../services/api';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-navigation',
-  imports: [],
+  imports: [RouterLink, RouterLinkActive, CommonModule],
   templateUrl: './navigation.html',
-  styleUrl: './navigation.scss',
+  styleUrls: ['./navigation.scss'],
 })
 export class Navigation implements OnInit {
 
