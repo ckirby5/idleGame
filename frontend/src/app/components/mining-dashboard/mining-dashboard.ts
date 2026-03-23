@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../services/api';
 
@@ -9,7 +9,7 @@ import { ApiService } from '../../services/api';
   templateUrl: './mining-dashboard.html',
   styleUrl: './mining-dashboard.scss',
 })
-export class MiningDashboard implements OnInit {
+export class MiningDashboard implements OnInit, OnDestroy {
 
   miningLevel: number = 0; // Placeholder for mining level, to be updated with actual data
   currentXp: number = 0; // Placeholder for current XP, to be updated with actual data
@@ -30,15 +30,36 @@ constructor(
 ) {}
 
 ngOnInit(): void {
+  // Load available resources
   this.apiService.getAvailableResources().subscribe({
     next: (data) => {
       this.availableOres = data.availableOres;
       this.miningLevel = data.miningLevel;
       this.currentXp = data.currentXp;
-      this.cdr.detectChanges(); // <-- Must have this
+      this.cdr.detectChanges();
     },
     error: (error) => {
       console.error('Error fetching available resources:', error);
+    }
+  });
+
+  // Check for active mining task
+  this.apiService.getMiningStatus().subscribe({
+    next: (data) => {
+      if (data && data.totalCyclesCompleted !== undefined) {
+        // Active task exists - restore state and start polling
+        this.isMining = true;
+        this.miningStatus = data;
+        this.cyclesCompleted = data.totalCyclesCompleted;
+        this.currentCycle = data.currentCycle;
+        this.elapsedTime = data.elapsedTime;
+        this.damagePerSwing = data.damagePerSwing;
+        this.cdr.detectChanges();
+        this.pollMiningStatus(); // Start real-time updates
+      }
+    },
+    error: (err) => {
+      console.log('No active mining task');
     }
   });
 }
@@ -62,18 +83,20 @@ ngOnInit(): void {
 
   pollMiningStatus(): void {
     this.pollingInterval = setInterval(() => {
-      if (this.isMining && this.selectedOreId !== null) {
+      if (this.isMining) {
         this.apiService.getMiningStatus().subscribe({
-          next: (data) => {
-            console.log('Mining status:', data);
-            // Update mining status with the response from the API
-            this.miningStatus = data; // Assuming the API returns mining status
-            if (data) {
-              this.cyclesCompleted = data.totalCyclesCompleted; // Assuming the API returns cycles completed
-              this.currentCycle = data.currentCycle; // Assuming the API returns current progress
-              this.elapsedTime = data.elapsedTime; // Assuming the API returns elapsed time
-              this.damagePerSwing = data.damagePerSwing; // Assuming the API returns damage per swing
-              this.cdr.detectChanges(); // <-- This line must be here
+  next: (data) => {
+            if (data && data.totalCyclesCompleted !== undefined) {
+              this.isMining = true;
+              this.miningStatus = data;
+              this.cyclesCompleted = data.totalCyclesCompleted;
+              this.currentCycle = data.currentCycle;
+              this.elapsedTime = data.elapsedTime;
+              this.damagePerSwing = data.damagePerSwing;
+              // Add this if you have resourceId in the response:
+              // this.selectedOreId = data.resourceId;
+              this.cdr.detectChanges();
+              this.pollMiningStatus();
             }
           },
           error: (error) => {
@@ -111,8 +134,15 @@ stopMining(): void {
 }
 
   get ores() {
-  console.log('Getter called, availableOres:', this.availableOres);
-  return this.availableOres || [];
-}
+    console.log('Getter called, availableOres:', this.availableOres);
+    return this.availableOres || [];
+  }
+
+  ngOnDestroy(): void {
+    if (this.pollingInterval) {
+      clearInterval(this.pollingInterval);
+      this.pollingInterval = null;
+    }
+  }
 
 }

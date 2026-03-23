@@ -1,0 +1,29 @@
+<div class="card">
+  <div class="card-header">Active Task</div>
+  
+  <div *ngIf="!hasActiveTask">
+    <p style="color: #606974; font-size: 14px;">No active task running</p>
+  </div>
+
+  <div *ngIf="hasActiveTask">
+    <div class="stat-row">
+      <span class="stat-label">Mining {{ resourceName }}</span>
+      <span class="stat-value status-active">Active</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">Cycles Completed</span>
+      <span class="stat-value">{{ cyclesCompleted }}</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">Current Progress</span>
+      <span class="stat-value">{{ currentProgress?.percentComplete || 0 }}%</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" [style.width.%]="currentProgress?.percentComplete || 0"></div>
+    </div>
+    <div class="stat-row" style="margin-top: 12px;">
+      <span class="stat-label">Elapsed Time</span>
+      <span class="stat-value">{{ formatElapsedTime(elapsedTime) }}</span>
+    </div>
+  </div>
+</div>

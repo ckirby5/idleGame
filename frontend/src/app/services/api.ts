@@ -40,4 +40,10 @@ export class ApiService {
     return this.http.get(`${this.apiUrl}/character/stats`, { headers: this.getAuthHeaders() });
   }
 
+  getActiveTask(): Observable<any> {
+  return this.http.get(`${this.apiUrl}/tasks/active`, { 
+    headers: this.getAuthHeaders() 
+  });
+}
+
 }

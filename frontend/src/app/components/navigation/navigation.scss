@@ -5,6 +5,11 @@ ul {
 }
 
 .topNav {
+    position: fixed;  // Add this
+    top: 0;           // Add this
+    left: 0;          // Add this
+    right: 0;         // Add this
+    z-index: 100;     // Add this to keep it above content
     display: flex;
     justify-content: space-between;
     align-items: center;

@@ -8,3 +8,23 @@ body{
     margin: 0;
     font-family: 'Nunito', sans-serif;
 }
+.main-content {
+  margin-left: 60px; // Same as sidebar width
+  padding: 20px;
+  padding-top: 104px; // Account for top nav height
+}
+.dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; max-width: 1200px; margin: 0 auto; }
+.card { background: white; border-radius: 12px; border: 0.5px solid rgba(0,0,0,0.1); padding: 20px; }
+.card-header { font-size: 16px; font-weight: 600; color: #606974; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #EDEBE0; }
+.stat-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; }
+.stat-label { color: #606974; }
+.stat-value { font-weight: 500; }
+.progress-bar { width: 100%; height: 8px; background: #EDEBE0; border-radius: 4px; margin-top: 8px; overflow: hidden; }
+.progress-fill { height: 100%; background: #45988F; transition: width 0.3s; }
+.skill-item { margin: 12px 0; }
+.skill-name { font-size: 13px; color: #606974; margin-bottom: 4px; }
+.activity-item { padding: 10px 0; border-bottom: 1px solid #EDEBE0; font-size: 13px; color: #606974; }
+.activity-item:last-child { border-bottom: none; }
+.item-badge { display: inline-block; background: #988656; color: white; padding: 4px 12px; border-radius: 6px; font-size: 12px; margin-right: 8px; }
+.status-active { color: #45988F; font-weight: 500; }
+.wide-card { grid-column: 1 / -1; }

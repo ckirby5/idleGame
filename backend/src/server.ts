@@ -5,6 +5,7 @@ import authRouter from "./routes/auth";
 import { authenticate, AuthenticatedRequest } from "./middleware/auth";
 import miningRouter from "./routes/mining";
 import characterRouter from "./routes/character";
+import taskRoutes from "./routes/tasks";
 import cors from "cors";
 
 
@@ -15,7 +16,7 @@ const prisma = new PrismaClient();
 app.use(express.json());
 
 app.use(cors({
-  origin: "http://localhost:51223",
+  origin: "http://localhost:55077",
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
 }));
@@ -23,6 +24,7 @@ app.use(cors({
 app.use("/api/auth", authRouter);
 app.use("/api/mining", miningRouter);
 app.use("/api/character", characterRouter);
+app.use("/api/tasks", taskRoutes);
 
 app.get("/", async (req: Request, res: Response): Promise<void> => {
   const users = await prisma.user.findMany();
